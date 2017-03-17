@@ -7,32 +7,79 @@ namespace obudai_zh_gyakorlas
 {
     public class Burkolo : Mesterember
     {
-        private int szakterület;
-
-        public Burkolo(string szakterület)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public enum Szakterület
         {
             belso,
             kulso
         }
+        /// <summary>
+        /// ////////////////////////////////////////////////////////////////////
+        /// </summary>
+        private Szakterület SzakTerület;
 
-        public void összesSzabadnap()
+
+        public Burkolo(string _nev,int _napidij,Szakterület _szakterület) : base(_nev,_napidij)
         {
-            
+            this.szakterulet = _szakterület;
         }
 
-        public void mindenAdat()
+        public Szakterület szakterulet
         {
-            throw new System.NotImplementedException();
+            get
+            {
+                return SzakTerület;
+            }
+
+            set
+            {
+                switch (value)
+                {
+                    case Szakterület.belso:
+                    case Szakterület.kulso: break;
+                    default: throw new Exception("....");
+                }
+            }
         }
 
-        public void munkatVallal()
+       
+
+        public int összesSzabadnap()
         {
-            throw new System.NotImplementedException();
+            int szabad = 0;
+            foreach(bool b in foglaltnapok)
+            {
+                if(b)
+                {
+                    szabad++;
+                   
+                }
+                
+            }
+            return szabad;
+        }
+
+        public override string mindenadat()
+        {
+            StringBuilder sb = new StringBuilder(base.mindenadat());
+            sb.AppendFormat("szakterület:{0}", szakterulet.ToString());
+            return sb.ToString();
+        }
+
+        
+        public override bool munkatvallal(int nap)
+        {
+            if (nap > 31)
+            {
+                return false;
+            }
+
+            if (foglaltnapok[nap] == true)
+            {
+                foglaltnapok[nap] = false;
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -5,36 +5,45 @@ using System.Text;
 
 namespace obudai_zh_gyakorlas
 {
-    public class Mesterember
+    public abstract class Mesterember
     {
-
-
         private string nev;
         private int napidij;
-        private bool[] foglaltnapok = new bool[31];
+        public bool[] foglaltnapok = new bool[31];
 
 
-
-
-
-
-        public Mesterember(string nev, int napidij)
+        public Mesterember(string _nev, int _napidij)
         {
-            for(int i= 0;i<31;i++)
+
+            this.nev = _nev;
+            this.napidij = _napidij;
+
+            for (int i = 0; i < 31; i++)
             {
+
                 foglaltnapok[i] = true;
-                
+
             }
         }
 
-        public string mindenadat()
+        public virtual string mindenadat()
         {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("Név:{0} Napidij:{1} ", nev, napidij);
+            sb.AppendLine();
+
+            for (int i = 0; i < 31; i++)
+            {
+                if (foglaltnapok[i])
+                    sb.Append("1,");
+                else
+                    sb.Append("0,");
+            }
+
             return ToString();
         }
 
-        public bool munkatvallal()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract bool munkatvallal(int nap);
+
     }
 }

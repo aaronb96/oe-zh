@@ -7,31 +7,49 @@ namespace obudai_zh_gyakorlas
 {
     public class VizvezetekSzerelo : Mesterember
     {
-        public VizvezetekSzerelo()
+        private int Tapasztalat;
+
+        public VizvezetekSzerelo(int _tapsztalat,string _nev,int _napidij):base(_nev,_napidij)
         {
-            throw new System.NotImplementedException();
+            this.Tapasztalat = _tapsztalat;
         }
 
         public int tapasztalat
         {
             get
             {
-                throw new System.NotImplementedException();
+                return tapasztalat;
             }
 
             set
             {
+                if (value <= tapasztalat)
+                    throw new Exception("...");
+                tapasztalat = value;
             }
         }
 
         public override string mindenadat()
         {
-            throw new System.NotImplementedException();
+            StringBuilder sb = new StringBuilder(base.mindenadat());
+            sb.AppendFormat("tapasztalat:{0}", tapasztalat.ToString());
+            return sb.ToString();
         }
 
-        public void munkatVallal()
+        public override bool munkatvallal(int nap)
         {
-            throw new System.NotImplementedException();
+            if (nap < 1 || nap > 29)
+                throw new Exception("nemjó");
+
+            if (foglaltnapok[nap - 1]&&foglaltnapok[nap]&&foglaltnapok[nap + 1])
+            {
+                foglaltnapok[nap - 1] = false;
+                foglaltnapok[nap] = false;
+                foglaltnapok[nap + 1] = false;
+                return true;
+            }
+
+            return false;
         }
     }
 }
